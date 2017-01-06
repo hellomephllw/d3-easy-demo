@@ -4,6 +4,7 @@
   "description": "this is a easy demo for testing d3",
   "main": "webpack.config.js",
   "scripts": {
+    "dev": "webpack-dev-server --hot --inline --progress --colors --devtool inline-eval-cheap-source-map",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "llw",
@@ -21,6 +22,7 @@
     "sass-loader": "^4.1.1",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
   }
 }
