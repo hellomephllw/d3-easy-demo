@@ -9,7 +9,8 @@ const
 module.exports = {
     //入口文件路径配置
     entry: {
-        main: `${rootPath}/src/scripts/main.js`
+        main: `${rootPath}/src/scripts/main.js`,
+        relationship: `${rootPath}/src/scripts/relationship.js`
     },
     //输出文件路径配置
     output: {
@@ -45,6 +46,11 @@ module.exports = {
             {
                 test: /\.scss$/,
                 loader: 'style-loader!css-loader!sass-loader?sourceMap'
+            },
+            //json加载器
+            {
+                test: /\.json$/,
+                loader: 'json'
             }
         ]
     },
@@ -59,9 +65,16 @@ module.exports = {
         }),
         //编译html
         new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/entry.html`,
             template: `${rootPath}/src/views/entry.html`,//指定视图
             hash: true,
             chunks: ['main']//为视图指定js和css，名字在entry中选一个或多个
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/relationship.html`,
+            template: `${rootPath}/src/views/relationship.html`,//指定视图
+            hash: true,
+            chunks: ['relationship']//为视图指定js和css，名字在entry中选一个或多个
         })
     ]
 };
