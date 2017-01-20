@@ -6,11 +6,29 @@
 define(function(require, module, exports) {
 	// var d3 = require('d3');
 
+    // Vars
+    var nodes, links, size, nodediameter, nodediameter2, linkDistance;
+    var cores;
+    var gravity, rubberStrength, springStrength;
+    var repulsionStrength;
+    var event, drag, alpha, isneedinit, tickcounts;
+    var layoutFunc;
+
 	treeforcelayout = function() {
+        // Vars
+        nodes = [], links = [], size = [ 100, 100 ], nodediameter = 100, nodediameter2 = 10000, linkDistance = 10;
+        cores = [];
+        gravity = .0008, rubberStrength = 0.2, springStrength = 0.1;
+        repulsionStrength = 500.0;
+        event = d3.dispatch("start", "tick", "end"), drag, alpha, isneedinit = true, tickcounts = 0;
+        layoutFunc = Layout_GalaxyRubber;
+
 		var force = {};
 
 		// Start, tick tick tick...
 		force.start = function() {
+			if (!nodes) nodes = [];
+
 			if (!isneedinit)
 				return force.resume();
 
@@ -332,13 +350,6 @@ define(function(require, module, exports) {
 			layoutFunc = Layout_Tree;
 		}
 
-		// Vars
-		var nodes = [], links = [], size = [ 100, 100 ], nodediameter = 100, nodediameter2 = 10000, linkDistance = 10;
-		var cores = [];
-		var gravity = .0008, rubberStrength = 0.2, springStrength = 0.1;
-		repulsionStrength = 500.0;
-		var event = d3.dispatch("start", "tick", "end"), drag, alpha, isneedinit = true, tickcounts = 0;
-		var layoutFunc = Layout_GalaxyRubber;
 
 		// Layout: Galaxy Spring Layout
 		// Like sns network

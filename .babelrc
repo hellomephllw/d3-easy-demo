@@ -1,4 +1,11 @@
 {
   "presets": ["es2015", "stage-3"],
-  "plugins": []
+  "plugins": [],
+  "ignore": [
+    "./src/lib/networkgraphCR.js",
+    "./src/lib/configCR.js",
+    "./src/lib/nodeCR.js",
+    "./src/lib/edgeCR.js",
+    "./src/lib/ydforcelayout.js"
+  ]
 }

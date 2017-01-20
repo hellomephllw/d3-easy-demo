@@ -1,6 +1,6 @@
 define(function (require, module, exports) {
-
     // var d3 = require('d3');
+
     var config = require("./configCR").exports.config;
 
     var i3Node = require('./nodeCR').exports.node;
@@ -11,7 +11,7 @@ define(function (require, module, exports) {
 
     var autoLink = require("./autolink").exports.autoLink;
 
-    var clearPropertyTable = require("./propertyTable").exports.clearPropertyTable;
+    // var clearPropertyTable = require("./propertyTable").exports.clearPropertyTable;
 
     // vars: canvas
     canvas = new i3Canvas();
@@ -61,7 +61,7 @@ define(function (require, module, exports) {
 
         // Update Force
         canvas.UpdateForce();
-    }
+    };
 
     // Func: events of i3node
     AssignEventsToi3Node = function (i3node) {
@@ -69,7 +69,7 @@ define(function (require, module, exports) {
         // Events: Node Drag
         i3node.GetSVGGroup().call(getCanvas().GetForceLayout().drag);
 
-    }
+    };
 
     // 批量修改默认节点行为，单独一个node可以直接调用
     // node.onEvent("event",function);
@@ -394,8 +394,23 @@ define(function (require, module, exports) {
     // vars: selected nodes/edges
     selectedStateObj = [];
 
-    config.network = this;
-    config.network.GO();
+    localModule = {
+        "onClickRootNode": onClickRootNode,
+        "onClickBackground": onClickBackground,
+        "selectedElements": selectedElements,
+        "addNodeFromRoot": addNodeFromRoot,
+        "addNode": addNode,
+        "exploreNode": exploreNode,
+        "assignEdgesEvents": assignEdgesEvents,
+        "assignNodesEvents": assignNodesEvents,
+        "setCanvasWidthHeight": setCanvasWidthHeight,
+        "removeNode": removeNode,
+        "getCanvas": getCanvas
+    };
+
+    config.network = localModule;
+    GO();
+    // config.network.GO();
 
     // click root node
     function onClickRootNode(callback) {
@@ -420,17 +435,5 @@ define(function (require, module, exports) {
     }
 
 
-    module.exports = {
-        "onClickRootNode": onClickRootNode,
-        "onClickBackground": onClickBackground,
-        "selectedElements": selectedElements,
-        "addNodeFromRoot": addNodeFromRoot,
-        "addNode": addNode,
-        "exploreNode": exploreNode,
-        "assignEdgesEvents": assignEdgesEvents,
-        "assignNodesEvents": assignNodesEvents,
-        "setCanvasWidthHeight": setCanvasWidthHeight,
-        "removeNode": removeNode,
-        "getCanvas": getCanvas
-    };
+    module.exports = localModule;
 });

@@ -5,6 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "dev": "webpack-dev-server --hot --inline --progress --colors --devtool inline-eval-cheap-source-map",
+    "debug": "webpack-dev-server --hot --inline --progress --colors --devtool source-map",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "llw",
@@ -16,8 +17,10 @@
     "babel-preset-stage-3": "^6.17.0",
     "css-loader": "^0.26.1",
     "d3": "^3.5.12",
+    "expose-loader": "^0.7.1",
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "^2.26.0",
+    "jquery": "^3.1.1",
     "json-loader": "^0.5.4",
     "node-sass": "^4.1.1",
     "sass-loader": "^4.1.1",
