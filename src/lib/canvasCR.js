@@ -1,7 +1,7 @@
 define(function (require, module, exports) {
 
     // var d3 = require('d3');
-    var map = require("../../js/map");
+    var map = require("./map");
 
     var i3Node = require('./nodeCR').exports.node;
     var i3Edge = require('./edgeCR').exports.edge;
@@ -21,13 +21,16 @@ define(function (require, module, exports) {
             // The Basic SVG
             this.svg = d3.select(rootname).append("svg");
             // this.svg.attr("class", this.canvas_style);
-            this.svg.attr("width", this.attr_svgW).attr("height",
-                this.attr_svgH);
+            this.svg
+                .attr("width", this.attr_svgW)
+                .attr("height", this.attr_svgH);
 
             // BackGround Rect
-            this.svg_rect = this.svg.append("rect").attr("width",
-                this.attr_svgW).attr("height", this.attr_svgH).attr(
-                "class", this.canvas_background_style).attr("style", "position:absolute;fill:white");
+            this.svg_rect = this.svg.append("rect")
+                .attr("width", this.attr_svgW)
+                .attr("height", this.attr_svgH)
+                .attr("class", this.canvas_background_style)
+                .attr("style", "position:absolute;fill:white");
 
             // Root Node
             this.i3RootNode = new i3Node();

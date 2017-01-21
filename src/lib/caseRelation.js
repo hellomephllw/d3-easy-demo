@@ -4,7 +4,7 @@ define(function (require, module, exports) {
     var autoLink = require('./autolink').exports.autoLink;
     var config = require("./configCR").exports.config;
 
-    var updatePropertyTable = require("./propertyTable").exports.updatePropertyTable;
+    // var updatePropertyTable = require("./propertyTable").exports.updatePropertyTable;
     var refreshPagingTable = require("./nodePage").exports.refreshPagingTable;
     var getData = require("./utility").exports.getData;
     var getDataSync = require("./utility").exports.getDataSync;
