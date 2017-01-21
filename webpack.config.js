@@ -11,6 +11,7 @@ module.exports = {
     entry: {
         main: `${rootPath}/src/scripts/main.js`,
         'force-demo1': `${rootPath}/src/scripts/force-demo1.js`,
+        'force-demo2': `${rootPath}/src/scripts/force-demo2.js`,
         relationship: `${rootPath}/src/scripts/relationship.js`
     },
     //输出文件路径配置
@@ -76,6 +77,12 @@ module.exports = {
             template: `${rootPath}/src/views/force-demo1.html`,//指定视图
             hash: true,
             chunks: ['force-demo1']//为视图指定js和css，名字在entry中选一个或多个
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/force-demo2.html`,
+            template: `${rootPath}/src/views/force-demo2.html`,//指定视图
+            hash: true,
+            chunks: ['force-demo2']//为视图指定js和css，名字在entry中选一个或多个
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/relationship.html`,
