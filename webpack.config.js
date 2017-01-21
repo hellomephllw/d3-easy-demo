@@ -12,6 +12,7 @@ module.exports = {
         main: `${rootPath}/src/scripts/main.js`,
         'force-demo1': `${rootPath}/src/scripts/force-demo1.js`,
         'force-demo2': `${rootPath}/src/scripts/force-demo2.js`,
+        barchart: `${rootPath}/src/scripts/barchart.js`,
         relationship: `${rootPath}/src/scripts/relationship.js`
     },
     //输出文件路径配置
@@ -76,6 +77,12 @@ module.exports = {
             template: `${rootPath}/src/views/relationship.html`,//指定视图
             hash: true,
             chunks: ['relationship']//为视图指定js和css，名字在entry中选一个或多个
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/barchart.html`,
+            template: `${rootPath}/src/views/barchart.html`,//指定视图
+            hash: true,
+            chunks: ['barchart']//为视图指定js和css，名字在entry中选一个或多个
         })
     ]
 };
