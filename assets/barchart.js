@@ -46,22 +46,18 @@
 
 	'use strict';
 
-	var _d = __webpack_require__(1);
-
-	var d3 = _interopRequireWildcard(_d);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	/**
+	 * Created by liliwen on 2017/1/21.
+	 */
+	var d3 = __webpack_require__(1);
 
 	//数据
 	var dataset = [50, 43, 120, 87, 99, 167, 142];
 
 	//svg宽高
-	/**
-	 * Created by liliwen on 2017/1/21.
-	 */
 	var width = '400';
 	var height = '400';
-
+	//svg
 	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
 
 	//边距
@@ -72,28 +68,64 @@
 	//柱的宽度
 	var rectWidth = 30;
 
+	//处理函数
+	var rectDispose = function rectDispose(rect) {
+	    return rect.attr('fill', 'steelblue').attr('x', function (d, i) {
+	        return padding.left + i * rectStep;
+	    }).attr('y', function (d, i) {
+	        return height - padding.bottom - d;
+	    }).attr('width', rectWidth).attr('height', function (d) {
+	        return d;
+	    });
+	};
+	var textDispose = function textDispose(text) {
+	    return text.attr('fill', 'white').attr('font-size', '14px').attr('text-anchor', 'middle').attr('x', function (d, i) {
+	        return padding.left + i * rectStep;
+	    }).attr('y', function (d, i) {
+	        return height - padding.bottom - d;
+	    }).attr('dx', rectWidth / 2).attr('dy', '1em').text(function (d) {
+	        return d;
+	    });
+	};
 	//画bar
-	var rect = svg.selectAll('rect').data(dataset).enter().append('rect').attr('fill', 'steelblue').attr('x', function (d, i) {
-	    return padding.left + i * rectStep;
-	}).attr('y', function (d, i) {
-	    return height - padding.bottom - d;
-	}).attr('width', rectWidth).attr('height', function (d) {
-	    return d;
-	});
+	var rect = svg.selectAll('rect').data(dataset).enter().append('rect');
+	rectDispose(rect);
 
 	//文本
-	var text = svg.selectAll('text').data(dataset).enter().append('text').attr('fill', 'white').attr('font-size', '14px').attr('text-anchor', 'middle').attr('x', function (d, i) {
-	    return padding.left + i * rectStep;
-	}).attr('y', function (d, i) {
-	    return height - padding.bottom - d;
-	}).attr('dx', rectWidth / 2).attr('dy', '1em').text(function (d) {
-	    return d;
-	});
-
-	draw();
+	var text = svg.selectAll('text').data(dataset).enter().append('text');
+	textDispose(text);
 
 	//更新重绘
-	function draw() {}
+	function draw() {
+	    //矩形处理
+	    var updateRect = svg.selectAll('rect').data(dataset),
+	        enterRect = updateRect.enter(),
+	        exitRect = updateRect.exit();
+	    //执行处理
+	    rectDispose(updateRect);
+	    rectDispose(enterRect.append('rect'));
+	    exitRect.remove();
+
+	    //文字update
+	    var updateText = svg.selectAll('text').data(dataset),
+	        enterText = updateText.enter(),
+	        exitText = updateText.exit();
+	    textDispose(updateText);
+	    textDispose(enterText.append('text'));
+	    exitText.remove();
+	}
+
+	//btn
+	d3.select('body').insert('button', 'script').attr('id', 'asc');
+	d3.select('body').insert('button', 'script').attr('id', 'desc');
+	d3.selectAll('button').data(['升序', '降序']).text(function (d) {
+	    return d;
+	});
+	d3.select('body').on('click', function () {
+	    if (d3.event.target.id == 'asc') dataset.sort(d3.ascending);else if (d3.event.target.id == 'desc') dataset.sort(d3.descending);
+	    //重绘
+	    draw();
+	});
 
 /***/ },
 /* 1 */
@@ -101,7 +133,7 @@
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
 	  var d3 = {
-	    version: "3.5.12"
+	    version: "3.5.17"
 	  };
 	  var d3_arraySlice = [].slice, d3_array = function(list) {
 	    return d3_arraySlice.call(list);
@@ -321,20 +353,20 @@
 	    while (i < n) pairs[i] = [ p0 = p1, p1 = array[++i] ];
 	    return pairs;
 	  };
-	  d3.zip = function() {
-	    if (!(n = arguments.length)) return [];
-	    for (var i = -1, m = d3.min(arguments, d3_zipLength), zips = new Array(m); ++i < m; ) {
-	      for (var j = -1, n, zip = zips[i] = new Array(n); ++j < n; ) {
-	        zip[j] = arguments[j][i];
+	  d3.transpose = function(matrix) {
+	    if (!(n = matrix.length)) return [];
+	    for (var i = -1, m = d3.min(matrix, d3_transposeLength), transpose = new Array(m); ++i < m; ) {
+	      for (var j = -1, n, row = transpose[i] = new Array(n); ++j < n; ) {
+	        row[j] = matrix[j][i];
 	      }
 	    }
-	    return zips;
+	    return transpose;
 	  };
-	  function d3_zipLength(d) {
+	  function d3_transposeLength(d) {
 	    return d.length;
 	  }
-	  d3.transpose = function(matrix) {
-	    return d3.zip.apply(d3, matrix);
+	  d3.zip = function() {
+	    return d3.transpose(arguments);
 	  };
 	  d3.keys = function(map) {
 	    var keys = [];
@@ -721,9 +753,10 @@
 	      return d3_selectAll(selector, this);
 	    };
 	  }
+	  var d3_nsXhtml = "http://www.w3.org/1999/xhtml";
 	  var d3_nsPrefix = {
 	    svg: "http://www.w3.org/2000/svg",
-	    xhtml: "http://www.w3.org/1999/xhtml",
+	    xhtml: d3_nsXhtml,
 	    xlink: "http://www.w3.org/1999/xlink",
 	    xml: "http://www.w3.org/XML/1998/namespace",
 	    xmlns: "http://www.w3.org/2000/xmlns/"
@@ -906,7 +939,7 @@
 	  function d3_selection_creator(name) {
 	    function create() {
 	      var document = this.ownerDocument, namespace = this.namespaceURI;
-	      return namespace ? document.createElementNS(namespace, name) : document.createElement(name);
+	      return namespace === d3_nsXhtml && document.documentElement.namespaceURI === d3_nsXhtml ? document.createElement(name) : document.createElementNS(namespace, name);
 	    }
 	    function createNS() {
 	      return this.ownerDocument.createElementNS(name.space, name.local);
@@ -1305,7 +1338,7 @@
 	    }
 	    function dragstart(id, position, subject, move, end) {
 	      return function() {
-	        var that = this, target = d3.event.target, parent = that.parentNode, dispatch = event.of(that, arguments), dragged = 0, dragId = id(), dragName = ".drag" + (dragId == null ? "" : "-" + dragId), dragOffset, dragSubject = d3.select(subject(target)).on(move + dragName, moved).on(end + dragName, ended), dragRestore = d3_event_dragSuppress(target), position0 = position(parent, dragId);
+	        var that = this, target = d3.event.target.correspondingElement || d3.event.target, parent = that.parentNode, dispatch = event.of(that, arguments), dragged = 0, dragId = id(), dragName = ".drag" + (dragId == null ? "" : "-" + dragId), dragOffset, dragSubject = d3.select(subject(target)).on(move + dragName, moved).on(end + dragName, ended), dragRestore = d3_event_dragSuppress(target), position0 = position(parent, dragId);
 	        if (origin) {
 	          dragOffset = origin.apply(that, arguments);
 	          dragOffset = [ dragOffset.x - position0[0], dragOffset.y - position0[1] ];
@@ -3625,7 +3658,7 @@
 	        λ0 = λ, sinφ0 = sinφ, cosφ0 = cosφ, point0 = point;
 	      }
 	    }
-	    return (polarAngle < -ε || polarAngle < ε && d3_geo_areaRingSum < 0) ^ winding & 1;
+	    return (polarAngle < -ε || polarAngle < ε && d3_geo_areaRingSum < -ε) ^ winding & 1;
 	  }
 	  function d3_geo_clipCircle(radius) {
 	    var cr = Math.cos(radius), smallRadius = cr > 0, notHemisphere = abs(cr) > ε, interpolate = d3_geo_circleInterpolate(radius, 6 * d3_radians);

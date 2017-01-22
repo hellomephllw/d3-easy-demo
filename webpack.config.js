@@ -13,6 +13,7 @@ module.exports = {
         'force-demo1': `${rootPath}/src/scripts/force-demo1.js`,
         'force-demo2': `${rootPath}/src/scripts/force-demo2.js`,
         barchart: `${rootPath}/src/scripts/barchart.js`,
+        piechart: `${rootPath}/src/scripts/piechart.js`,
         relationship: `${rootPath}/src/scripts/relationship.js`
     },
     //输出文件路径配置
@@ -56,33 +57,39 @@ module.exports = {
         //编译html
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/entry.html`,
-            template: `${rootPath}/src/views/entry.html`,//指定视图
+            template: `${rootPath}/src/views/entry.html`,
             hash: true,
-            chunks: ['main']//为视图指定js和css，名字在entry中选一个或多个
+            chunks: ['main']
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/force-demo1.html`,
-            template: `${rootPath}/src/views/force-demo1.html`,//指定视图
+            template: `${rootPath}/src/views/force-demo1.html`,
             hash: true,
-            chunks: ['force-demo1']//为视图指定js和css，名字在entry中选一个或多个
+            chunks: ['force-demo1']
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/force-demo2.html`,
-            template: `${rootPath}/src/views/force-demo2.html`,//指定视图
+            template: `${rootPath}/src/views/force-demo2.html`,
             hash: true,
-            chunks: ['force-demo2']//为视图指定js和css，名字在entry中选一个或多个
+            chunks: ['force-demo2']
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/relationship.html`,
-            template: `${rootPath}/src/views/relationship.html`,//指定视图
+            template: `${rootPath}/src/views/relationship.html`,
             hash: true,
-            chunks: ['relationship']//为视图指定js和css，名字在entry中选一个或多个
+            chunks: ['relationship']
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/barchart.html`,
-            template: `${rootPath}/src/views/barchart.html`,//指定视图
+            template: `${rootPath}/src/views/barchart.html`,
             hash: true,
-            chunks: ['barchart']//为视图指定js和css，名字在entry中选一个或多个
+            chunks: ['barchart']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/piechart.html`,
+            template: `${rootPath}/src/views/piechart.html`,
+            hash: true,
+            chunks: ['piechart']
         })
     ]
 };

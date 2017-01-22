@@ -46,96 +46,20 @@
 
 	'use strict';
 
-	var _d = __webpack_require__(1);
+	/**
+	 * Created by wb-llw259548 on 2017/1/22.
+	 */
+	var d3 = __webpack_require__(1);
 
-	var d3 = _interopRequireWildcard(_d);
+	//数据
+	var dataset = [['小米', 60.8], ['三星', 58.4], ['联想', 47.3], ['苹果', 46.6], ['华为', 41.3], ['酷派', 40.1], ['其他', 111.5]];
 
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	/**数据*/
-	var width = 400,
-	    height = 400; /**
-	                   * Created by liliwen on 2017/1/19.
-	                   */
-
-
-	var nodes = [{ name: '0' }, { name: '1' }, { name: '2' }, { name: '3' }, { name: '4' }, { name: '5' }, { name: '6' }];
-
-	var edges = [{ source: 0, target: 1 }, { source: 0, target: 2 }, { source: 0, target: 3 }, { source: 1, target: 4 }, { source: 1, target: 5 }, { source: 1, target: 6 }];
-
-	var color = d3.scale.category20();
-
-	/**布局*/
-	var force = d3.layout.force().nodes(nodes).links(edges).size([width, height]).linkDistance(90).charge(-400);
-
-	force.start();
-
-	console.log(nodes);
-	console.log(edges);
-
-	/**绘制*/
-	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
-	//绘制连线
-	var lines = svg.selectAll('.forceLine').data(edges).enter().append('line').classed('forceLine', true).style('stroke', '#ccc').style('stroke-width', 1);
-	//绘制节点
-	var circles = svg.selectAll('.forceCircle').data(nodes).enter().append('circle').classed('forceCircle', true).attr('r', 20).style('fill', function (d, i) {
-	    return color(i);
-	});
-	//绘制文字
-	var texts = svg.selectAll('.forceText').data(nodes).enter().append('text').classed('forceText', true).attr('x', function (d) {
-	    return d.x;
-	}).attr('y', function (d) {
-	    return d.y;
-	}).text(function (d) {
-	    return d.name;
+	//布局
+	var pie = d3.layout.pie().value(function (d) {
+	  return d[1];
 	});
 
-	//tick事件的监听器
-	force.on('tick', function () {
-	    //更新连线的端点坐标
-	    lines.attr('x1', function (d) {
-	        return d.source.x;
-	    }).attr('y1', function (d) {
-	        return d.source.y;
-	    }).attr('x2', function (d) {
-	        return d.target.x;
-	    }).attr('y2', function (d) {
-	        return d.target.y;
-	    });
-	    //更新节点坐标
-	    circles.attr('cx', function (d) {
-	        return d.x;
-	    }).attr('cy', function (d) {
-	        return d.y;
-	    });
-	    //更新节点文字的坐标
-	    texts.attr('x', function (d) {
-	        return d.x;
-	    }).attr('y', function (d) {
-	        return d.y;
-	    });
-	});
-
-	//指定事件
-	force.on('start', function () {
-	    console.log('开始运动！');
-	});
-
-	force.on('end', function () {
-	    console.log('结束运动！');
-	});
-
-	//指定事件
-	var drag = force.drag().on('dragstart', function () {
-	    d3.select(this).style('fill', 'orange');
-	}).on('dragend', function (d, i) {
-	    d3.select(this).style('fill', color(i));
-	}).on('drag', function (d, i) {
-	    d3.select(this).style('fill', 'yellow');
-	});
-
-	//注册事件
-	circles.call(drag);
+	console.log(pie(dataset));
 
 /***/ },
 /* 1 */
