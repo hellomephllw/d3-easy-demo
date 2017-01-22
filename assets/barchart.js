@@ -52,14 +52,17 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	//数据
+	var dataset = [50, 43, 120, 87, 99, 167, 142];
+
 	//svg宽高
-	var width = '400px'; /**
-	                      * Created by liliwen on 2017/1/21.
-	                      */
+	/**
+	 * Created by liliwen on 2017/1/21.
+	 */
+	var width = '400';
+	var height = '400';
 
-	var height = '400px';
-
-	var svg = d3.select('body').append('svg').attr('width', width).attr('height', height);
+	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
 
 	//边距
 	var padding = { left: 20, top: 20, right: 20, bottom: 20 };
@@ -69,13 +72,36 @@
 	//柱的宽度
 	var rectWidth = 30;
 
+	//画bar
+	var rect = svg.selectAll('rect').data(dataset).enter().append('rect').attr('fill', 'steelblue').attr('x', function (d, i) {
+	    return padding.left + i * rectStep;
+	}).attr('y', function (d, i) {
+	    return height - padding.bottom - d;
+	}).attr('width', rectWidth).attr('height', function (d) {
+	    return d;
+	});
+
+	//文本
+	var text = svg.selectAll('text').data(dataset).enter().append('text').attr('fill', 'white').attr('font-size', '14px').attr('text-anchor', 'middle').attr('x', function (d, i) {
+	    return padding.left + i * rectStep;
+	}).attr('y', function (d, i) {
+	    return height - padding.bottom - d;
+	}).attr('dx', rectWidth / 2).attr('dy', '1em').text(function (d) {
+	    return d;
+	});
+
+	draw();
+
+	//更新重绘
+	function draw() {}
+
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
 	  var d3 = {
-	    version: "3.5.17"
+	    version: "3.5.12"
 	  };
 	  var d3_arraySlice = [].slice, d3_array = function(list) {
 	    return d3_arraySlice.call(list);
@@ -295,20 +321,20 @@
 	    while (i < n) pairs[i] = [ p0 = p1, p1 = array[++i] ];
 	    return pairs;
 	  };
-	  d3.transpose = function(matrix) {
-	    if (!(n = matrix.length)) return [];
-	    for (var i = -1, m = d3.min(matrix, d3_transposeLength), transpose = new Array(m); ++i < m; ) {
-	      for (var j = -1, n, row = transpose[i] = new Array(n); ++j < n; ) {
-	        row[j] = matrix[j][i];
+	  d3.zip = function() {
+	    if (!(n = arguments.length)) return [];
+	    for (var i = -1, m = d3.min(arguments, d3_zipLength), zips = new Array(m); ++i < m; ) {
+	      for (var j = -1, n, zip = zips[i] = new Array(n); ++j < n; ) {
+	        zip[j] = arguments[j][i];
 	      }
 	    }
-	    return transpose;
+	    return zips;
 	  };
-	  function d3_transposeLength(d) {
+	  function d3_zipLength(d) {
 	    return d.length;
 	  }
-	  d3.zip = function() {
-	    return d3.transpose(arguments);
+	  d3.transpose = function(matrix) {
+	    return d3.zip.apply(d3, matrix);
 	  };
 	  d3.keys = function(map) {
 	    var keys = [];
@@ -695,10 +721,9 @@
 	      return d3_selectAll(selector, this);
 	    };
 	  }
-	  var d3_nsXhtml = "http://www.w3.org/1999/xhtml";
 	  var d3_nsPrefix = {
 	    svg: "http://www.w3.org/2000/svg",
-	    xhtml: d3_nsXhtml,
+	    xhtml: "http://www.w3.org/1999/xhtml",
 	    xlink: "http://www.w3.org/1999/xlink",
 	    xml: "http://www.w3.org/XML/1998/namespace",
 	    xmlns: "http://www.w3.org/2000/xmlns/"
@@ -881,7 +906,7 @@
 	  function d3_selection_creator(name) {
 	    function create() {
 	      var document = this.ownerDocument, namespace = this.namespaceURI;
-	      return namespace === d3_nsXhtml && document.documentElement.namespaceURI === d3_nsXhtml ? document.createElement(name) : document.createElementNS(namespace, name);
+	      return namespace ? document.createElementNS(namespace, name) : document.createElement(name);
 	    }
 	    function createNS() {
 	      return this.ownerDocument.createElementNS(name.space, name.local);
@@ -1280,7 +1305,7 @@
 	    }
 	    function dragstart(id, position, subject, move, end) {
 	      return function() {
-	        var that = this, target = d3.event.target.correspondingElement || d3.event.target, parent = that.parentNode, dispatch = event.of(that, arguments), dragged = 0, dragId = id(), dragName = ".drag" + (dragId == null ? "" : "-" + dragId), dragOffset, dragSubject = d3.select(subject(target)).on(move + dragName, moved).on(end + dragName, ended), dragRestore = d3_event_dragSuppress(target), position0 = position(parent, dragId);
+	        var that = this, target = d3.event.target, parent = that.parentNode, dispatch = event.of(that, arguments), dragged = 0, dragId = id(), dragName = ".drag" + (dragId == null ? "" : "-" + dragId), dragOffset, dragSubject = d3.select(subject(target)).on(move + dragName, moved).on(end + dragName, ended), dragRestore = d3_event_dragSuppress(target), position0 = position(parent, dragId);
 	        if (origin) {
 	          dragOffset = origin.apply(that, arguments);
 	          dragOffset = [ dragOffset.x - position0[0], dragOffset.y - position0[1] ];
@@ -3600,7 +3625,7 @@
 	        λ0 = λ, sinφ0 = sinφ, cosφ0 = cosφ, point0 = point;
 	      }
 	    }
-	    return (polarAngle < -ε || polarAngle < ε && d3_geo_areaRingSum < -ε) ^ winding & 1;
+	    return (polarAngle < -ε || polarAngle < ε && d3_geo_areaRingSum < 0) ^ winding & 1;
 	  }
 	  function d3_geo_clipCircle(radius) {
 	    var cr = Math.cos(radius), smallRadius = cr > 0, notHemisphere = abs(cr) > ε, interpolate = d3_geo_circleInterpolate(radius, 6 * d3_radians);

@@ -1,1 +1,3 @@
-import * as d3 from 'd3';
+let d3 = require('d3');
+
+d3.select('button').on('click', () => console.log(d3.event));
