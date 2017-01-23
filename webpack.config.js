@@ -14,6 +14,7 @@ module.exports = {
         'force-demo2': `${rootPath}/src/scripts/force-demo2.js`,
         barchart: `${rootPath}/src/scripts/barchart.js`,
         barchart1: `${rootPath}/src/scripts/barchart1.js`,
+        scatterchart: `${rootPath}/src/scripts/scatterchart.js`,
         piechart: `${rootPath}/src/scripts/piechart.js`,
         relationship: `${rootPath}/src/scripts/relationship.js`
     },
@@ -97,6 +98,12 @@ module.exports = {
             template: `${rootPath}/src/views/barchart1.html`,
             hash: true,
             chunks: ['barchart1']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/scatterchart.html`,
+            template: `${rootPath}/src/views/scatterchart.html`,
+            hash: true,
+            chunks: ['scatterchart']
         })
     ]
 };

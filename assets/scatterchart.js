@@ -51,62 +51,44 @@
 	 */
 	var d3 = __webpack_require__(1);
 
-	//数据
-	var dataset = [50, 43, 120, 87, 99, 167, 142];
-	var vals = ['张三', '李四', '王五', '郑六', 'Darren', 'Jacky', 'Thomas'];
+	//圆心数据
+	var centerData = [[0.5, 0.5], [0.7, 0.8], [0.4, 0.9], [0.11, 0.32], [0.88, 0.25], [0.75, 0.12], [0.5, 0.1], [0.2, 0.3], [0.4, 0.1], [0.6, 0.7]];
+
+	//svg宽高
+	var width = 400,
+	    height = 400;
+	//添加svg
+	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
 
 	//x、y轴宽度
 	var xAxisWidth = 300,
 	    yAxisWidth = 300;
-	//x轴比例尺
-	var xScale = d3.scale.ordinal().domain(d3.range(dataset.length)).rangeRoundBands([0, xAxisWidth], 0.2);
-	//y轴比例尺
-	var yScale = d3.scale.linear().domain([0, d3.max(dataset)]).rangeRound([0, yAxisWidth]);
-	var yScaleForAxis = d3.scale.linear().domain([0, d3.max(dataset)]).rangeRound([yAxisWidth, 0]);
+	//x、y轴比例尺
+	var xScale = d3.scale.linear().domain([0, 1.2 * d3.max(centerData, function (d) {
+	    return d[0];
+	})]).range([0, xAxisWidth]);
+	var yScale = d3.scale.linear().domain([0, 1.2 * d3.max(centerData, function (d) {
+	    return d[1];
+	})]).range([0, yAxisWidth]);
+	var yScaleForAxis = d3.scale.linear().domain([0, 1.2 * d3.max(centerData, function (d) {
+	    return d[1];
+	})]).range([yAxisWidth, 0]);
 
-	//svg宽高
-	var width = '400',
-	    height = '400';
-	//svg
-	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
+	//外边距
+	var padding = { top: 30, right: 30, bottom: 30, left: 30 };
 
-	//边距
-	var padding = { left: 30, top: 20, right: 20, bottom: 20 };
+	//绘制圆形
+	var circle = svg.selectAll('circle').data(centerData).enter().append('circle').attr('fill', 'black').attr('cx', function (d) {
+	    return padding.left + xScale(d[0]);
+	}).attr('cy', function (d) {
+	    return height - padding.bottom - yScale(d[1]);
+	}).attr('r', 5);
 
-	//画坐标轴
-	var xAxis = d3.svg.axis().scale(xScale).orient('bottom').tickFormat(function (d) {
-	    return vals[d];
-	});
+	//绘制xy轴
+	var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
 	var yAxis = d3.svg.axis().scale(yScaleForAxis).orient('left');
-	svg.append('g').attr('class', 'axis').attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom) + ')').call(xAxis);
-	svg.append('g').attr('class', 'axis').attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom - yAxisWidth) + ')').call(yAxis);
-
-	//处理函数
-	var rectDispose = function rectDispose(rect) {
-	    return rect.attr('fill', 'steelblue').attr('x', function (d, i) {
-	        return padding.left + xScale(i);
-	    }).attr('y', function (d, i) {
-	        return height - padding.bottom - yScale(d);
-	    }).attr('width', xScale.rangeBand()).attr('height', function (d) {
-	        return yScale(d);
-	    });
-	};
-	var textDispose = function textDispose(text) {
-	    return text.attr('fill', '#fff').attr('font-size', '14px').attr('text-anchor', 'middle').attr('x', function (d, i) {
-	        return padding.left + xScale(i);
-	    }).attr('y', function (d, i) {
-	        return height - padding.bottom - yScale(d);
-	    }).attr('dx', xScale.rangeBand() / 2).attr('dy', '1em').text(function (d) {
-	        return yScale(d);
-	    });
-	};
-	//画bar
-	var rect = svg.selectAll('rect').data(dataset).enter().append('rect');
-	rectDispose(rect);
-
-	//文本
-	var text = svg.selectAll('.num').data(dataset).enter().append('text').classed('num', true);
-	textDispose(text);
+	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom) + ')').call(xAxis);
+	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom - yAxisWidth) + ')').call(yAxis);
 
 /***/ },
 /* 1 */
