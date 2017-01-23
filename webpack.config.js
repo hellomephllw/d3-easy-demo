@@ -13,6 +13,7 @@ module.exports = {
         'force-demo1': `${rootPath}/src/scripts/force-demo1.js`,
         'force-demo2': `${rootPath}/src/scripts/force-demo2.js`,
         barchart: `${rootPath}/src/scripts/barchart.js`,
+        barchart1: `${rootPath}/src/scripts/barchart1.js`,
         piechart: `${rootPath}/src/scripts/piechart.js`,
         relationship: `${rootPath}/src/scripts/relationship.js`
     },
@@ -90,6 +91,12 @@ module.exports = {
             template: `${rootPath}/src/views/piechart.html`,
             hash: true,
             chunks: ['piechart']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/barchart1.html`,
+            template: `${rootPath}/src/views/barchart1.html`,
+            hash: true,
+            chunks: ['barchart1']
         })
     ]
 };

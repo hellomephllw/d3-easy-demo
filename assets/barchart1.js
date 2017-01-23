@@ -47,79 +47,92 @@
 	'use strict';
 
 	/**
-	 * Created by wb-llw259548 on 2017/1/22.
+	 * Created by wb-llw259548 on 2017/1/23.
 	 */
 	var d3 = __webpack_require__(1);
 
 	//数据
-	var dataset = [['小米', 60.8], ['三星', 58.4], ['联想', 47.3], ['苹果', 46.6], ['华为', 41.3], ['酷派', 40.1], ['其他', 111.5]];
+	var dataset = [50, 43, 120, 87, 99, 167, 142];
 
-	//宽高内外半径
-	var width = 400,
-	    height = 400,
-	    outerRadius = width / 3,
-	    innerRadius = 0;
+	//x、y轴宽度
+	var xAxisWidth = 300,
+	    yAxisWidth = 300;
+	//x轴比例尺
+	var xScale = d3.scale.ordinal().domain(d3.range(dataset.length)).rangeRoundBands([0, xAxisWidth], 0.2);
+	//y轴比例尺
+	var yScale = d3.scale.linear().domain([0, d3.max(dataset)]).rangeRound([0, yAxisWidth]);
 
-	//生成svg
+	//svg宽高
+	var width = '400',
+	    height = '400';
+	//svg
 	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
-	//布局
-	var pie = d3.layout.pie().startAngle(Math.PI * 0.2).endAngle(Math.PI * 1.5).value(function (d) {
-	    return d[1];
-	}); //指定数据
 
-	//重构数据，把数据重构为饼布局所需数据
-	var piedata = pie(dataset);
-	console.log(piedata);
+	//边距
+	var padding = { left: 20, top: 20, right: 20, bottom: 20 };
 
-	//弧生成器
-	var arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+	var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
+	// yScale.range([yAxisWidth, 0]);
+	var yAxis = d3.svg.axis().scale(yScale).orient('left');
+	svg.append('g').attr('class', 'axis').attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom) + ')').call(xAxis);
 
-	//颜色
-	var color = d3.scale.category20();
+	//处理函数
+	var rectDispose = function rectDispose(rect) {
+	    return rect.attr('fill', 'steelblue').attr('x', function (d, i) {
+	        return padding.left + xScale(i);
+	    }).attr('y', function (d, i) {
+	        return height - padding.bottom - yScale(d);
+	    }).attr('width', xScale.rangeBand()).attr('height', function (d) {
+	        return yScale(d);
+	    });
+	};
+	var textDispose = function textDispose(text) {
+	    return text.attr('fill', 'white').attr('font-size', '14px').attr('text-anchor', 'middle').attr('x', function (d, i) {
+	        return padding.left + xScale(i);
+	    }).attr('y', function (d, i) {
+	        return height - padding.bottom - yScale(d);
+	    }).attr('dx', xScale.rangeBand() / 2).attr('dy', '1em').text(function (d) {
+	        return yScale(d);
+	    });
+	};
+	//画bar
+	var rect = svg.selectAll('rect').data(dataset).enter().append('rect');
+	rectDispose(rect);
 
-	//添加对应数目的弧数组
-	var arcs = svg.selectAll('g').data(piedata).enter().append('g').attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')'); //把圆心移动到svg中央
+	//文本
+	var text = svg.selectAll('text').data(dataset).enter().append('text');
+	textDispose(text);
 
-	//添加弧的路径元素
-	arcs.append('path').attr('fill', function (d, i) {
-	    return color(i);
-	}).attr('d', function (d) {
-	    return arc(d);
+	//更新重绘
+	function draw() {
+	    //矩形处理
+	    var updateRect = svg.selectAll('rect').data(dataset),
+	        enterRect = updateRect.enter(),
+	        exitRect = updateRect.exit();
+	    //执行处理
+	    rectDispose(updateRect);
+	    rectDispose(enterRect.append('rect'));
+	    exitRect.remove();
+
+	    //文字update
+	    var updateText = svg.selectAll('text').data(dataset),
+	        enterText = updateText.enter(),
+	        exitText = updateText.exit();
+	    textDispose(updateText);
+	    textDispose(enterText.append('text'));
+	    exitText.remove();
+	}
+
+	//btn
+	d3.select('body').insert('button', 'script').attr('id', 'asc');
+	d3.select('body').insert('button', 'script').attr('id', 'desc');
+	d3.selectAll('button').data(['升序', '降序']).text(function (d) {
+	    return d;
 	});
-	//添加文本
-	arcs.append('text').text(function (d) {
-	    //计算百分比，并以文本形式输出
-	    var percent = Number(d.value) / d3.sum(dataset, function (d) {
-	        return d[1];
-	    }) * 100;
-
-	    return percent.toFixed(1) + '%';
-	}).attr('transform', function (d) {
-	    //调整文本位置
-	    var x = arc.centroid(d)[0] * 1.4 - 18,
-	        y = arc.centroid(d)[1] * 1.4;
-
-	    return 'translate(' + x + ', ' + y + ')';
-	});
-
-	//弧外连线
-	arcs.append('line').attr('stroke', 'black').attr('x1', function (d) {
-	    return arc.centroid(d)[0] * 2;
-	}).attr('y1', function (d) {
-	    return arc.centroid(d)[1] * 2;
-	}).attr('x2', function (d) {
-	    return arc.centroid(d)[0] * 2.2;
-	}).attr('y2', function (d) {
-	    return arc.centroid(d)[1] * 2.2;
-	});
-	//弧外文字
-	arcs.append('text').attr('transform', function (d) {
-	    var x = arc.centroid(d)[0] * 2.5,
-	        y = arc.centroid(d)[1] * 2.5;
-
-	    return 'translate(' + x + ', ' + y + ')';
-	}).attr('text-anchor', 'middle').text(function (d) {
-	    return d.data[0];
+	d3.select('body').on('click', function () {
+	    if (d3.event.target.id == 'asc') dataset.sort(d3.ascending);else if (d3.event.target.id == 'desc') dataset.sort(d3.descending);
+	    //重绘
+	    draw();
 	});
 
 /***/ },
