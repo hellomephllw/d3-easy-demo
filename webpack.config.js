@@ -15,6 +15,7 @@ module.exports = {
         barchart: `${rootPath}/src/scripts/barchart.js`,
         barchart1: `${rootPath}/src/scripts/barchart1.js`,
         scatterchart: `${rootPath}/src/scripts/scatterchart.js`,
+        'histogram-rect': `${rootPath}/src/scripts/histogram-rect.js`,
         piechart: `${rootPath}/src/scripts/piechart.js`,
         relationship: `${rootPath}/src/scripts/relationship.js`
     },
@@ -104,6 +105,12 @@ module.exports = {
             template: `${rootPath}/src/views/scatterchart.html`,
             hash: true,
             chunks: ['scatterchart']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/histogram-rect.html`,
+            template: `${rootPath}/src/views/histogram-rect.html`,
+            hash: true,
+            chunks: ['histogram-rect']
         })
     ]
 };

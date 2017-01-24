@@ -46,7 +46,49 @@
 
 	'use strict';
 
+	/**
+	 * Created by wb-llw259548 on 2017/1/24.
+	 */
 	var d3 = __webpack_require__(1);
+
+	//正态分布生成器，170为平均值，10为标准差
+	var rand = d3.random.normal(170, 10);
+
+	//正态分布值集合
+	var dataset = [];
+
+	//生成100个随机数
+	for (var i = 0; i < 100; ++i) {
+	    dataset.push(rand());
+	}
+
+	//直方图布局数据
+	var binNum = 20,
+	    rangeMin = 130,
+	    rangeMax = 210;
+	//直方图布局生成器
+	var histogram = d3.layout.histogram().range([rangeMin, rangeMax]).bins(binNum).frequency(true);
+	//生成直方图布局数据
+	var histogramData = histogram(dataset);
+
+	//svg宽高
+	var width = 600,
+	    height = 600;
+	//svg
+	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
+	//坐标轴数据
+	var xAxisWidth = 450,
+	    xTicks = histogramData.map(function (d) {
+	    return d.x;
+	});
+	//比例尺
+	var xScale = d3.scale.ordinal().domain(xTicks).rangeRoundBands([0, xAxisWidth], 0.1);
+	//外边距
+	var padding = { top: 30, right: 30, bottom: 30, left: 30 };
+	//坐标轴
+	var xAxis = d3.svg.axis().scale(xScale).orient('bottom').tickFormat(d3.format('.0f'));
+
+	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom) + ')').call(xAxis);
 
 /***/ },
 /* 1 */
