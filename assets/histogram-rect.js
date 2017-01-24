@@ -76,19 +76,42 @@
 	    height = 600;
 	//svg
 	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
-	//坐标轴数据
+	//外边距
+	var padding = { top: 30, right: 30, bottom: 30, left: 30 };
+
+	//x坐标轴数据
 	var xAxisWidth = 450,
 	    xTicks = histogramData.map(function (d) {
 	    return d.x;
 	});
-	//比例尺
-	var xScale = d3.scale.ordinal().domain(xTicks).rangeRoundBands([0, xAxisWidth], 0.1);
-	//外边距
-	var padding = { top: 30, right: 30, bottom: 30, left: 30 };
-	//坐标轴
+	//x轴比例尺
+	var xScale = d3.scale.ordinal().domain(xTicks).rangeRoundBands([0, xAxisWidth], 0.1, 1);
+	//x坐标轴
 	var xAxis = d3.svg.axis().scale(xScale).orient('bottom').tickFormat(d3.format('.0f'));
-
+	//绘制x轴
 	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom) + ')').call(xAxis);
+
+	//y坐标轴数据
+	var yAxisWidth = 450;
+	//y轴比例尺
+	var yScale = d3.scale.linear().domain([d3.min(histogramData, function (d) {
+	    return d.y;
+	}), d3.max(histogramData, function (d) {
+	    return d.y;
+	})]).range([0, yAxisWidth]);
+	//绘制矩形
+	var gRect = svg.append('g').attr('transform', 'translate(' + padding.left + ', ' + -padding.bottom + ')');
+	gRect.selectAll('rect').data(histogramData).enter().append('rect').classed('rect', true).attr('x', function (d, i) {
+	    return xScale(d.x);
+	}).attr('y', function (d, i) {
+	    return height - yScale(d.y);
+	}).attr('width', function (d, i) {
+	    return xScale.rangeBand();
+	}).attr('height', function (d, i) {
+	    return yScale(d.y);
+	});
+
+	console.log(histogramData);
 
 /***/ },
 /* 1 */
