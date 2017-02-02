@@ -52,14 +52,17 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	//数据
+	var dataset = [50, 43, 120, 87, 99, 167, 142];
+
 	//svg宽高
-	var width = '400px'; /**
-	                      * Created by liliwen on 2017/1/21.
-	                      */
+	/**
+	 * Created by liliwen on 2017/1/21.
+	 */
+	var width = '400';
+	var height = '400';
 
-	var height = '400px';
-
-	var svg = d3.select('body').append('svg').attr('width', width).attr('height', height);
+	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
 
 	//边距
 	var padding = { left: 20, top: 20, right: 20, bottom: 20 };
@@ -68,6 +71,24 @@
 	var rectStep = 35;
 	//柱的宽度
 	var rectWidth = 30;
+
+	//画bar
+	var rect = svg.selectAll('rect').data(dataset).enter().append('rect').attr('fill', 'steelblue').attr('x', function (d, i) {
+	    return padding.left + i * rectStep;
+	}).attr('y', function (d, i) {
+	    return height - padding.bottom - d;
+	}).attr('width', rectWidth).attr('height', function (d) {
+	    return d;
+	});
+
+	//文本
+	var text = svg.selectAll('text').data(dataset).enter().append('text').attr('fill', 'white').attr('font-size', '14px').attr('text-anchor', 'middle').attr('x', function (d, i) {
+	    return padding.left + i * rectStep;
+	}).attr('y', function (d, i) {
+	    return height - padding.bottom - d;
+	}).attr('dx', rectWidth / 2).attr('dy', '1em').text(function (d) {
+	    return d;
+	});
 
 /***/ },
 /* 1 */

@@ -44,23 +44,14 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * Created by liliwen on 2017/2/2.
+	 */
 	'use strict';
 
 	var d3 = __webpack_require__(1);
 
-	var arr = [6, 5, 4, 3, 2, 1];
-
-	var pEles = d3.select('body').selectAll('p').data(arr).enter().append('p');
-
-	pEles.style('color', function (d) {
-	    console.log(d);
-	    return 'red';
-	});
-
-	pEles.style('font-size', function (d) {
-	    console.log(d);
-	    return '14px';
-	});
+	console.log(1);
 
 /***/ },
 /* 1 */
