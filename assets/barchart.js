@@ -46,12 +46,15 @@
 
 	'use strict';
 
-	var _d = __webpack_require__(1);
+	/**
+	 * Created by liliwen on 2017/1/21.
+	 */
+	var d3 = __webpack_require__(1);
 
-	var d3 = _interopRequireWildcard(_d);
+	//数据
+	var dataset = [50, 43, 120, 87, 99, 167, 142];
 
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
+<<<<<<< HEAD
 	//数据
 	var dataset = [50, 43, 120, 87, 99, 167, 142];
 
@@ -62,6 +65,12 @@
 	var width = '400';
 	var height = '400';
 
+=======
+	//svg宽高
+	var width = '400';
+	var height = '400';
+	//svg
+>>>>>>> e624b93a5ac985f40e1f7cb50d65f65e48b0dd6a
 	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
 
 	//边距
@@ -72,6 +81,7 @@
 	//柱的宽度
 	var rectWidth = 30;
 
+<<<<<<< HEAD
 	//画bar
 	var rect = svg.selectAll('rect').data(dataset).enter().append('rect').attr('fill', 'steelblue').attr('x', function (d, i) {
 	    return padding.left + i * rectStep;
@@ -89,6 +99,66 @@
 	}).attr('dx', rectWidth / 2).attr('dy', '1em').text(function (d) {
 	    return d;
 	});
+=======
+	//处理函数
+	var rectDispose = function rectDispose(rect) {
+	    return rect.attr('fill', 'steelblue').attr('x', function (d, i) {
+	        return padding.left + i * rectStep;
+	    }).attr('y', function (d, i) {
+	        return height - padding.bottom - d;
+	    }).attr('width', rectWidth).attr('height', function (d) {
+	        return d;
+	    });
+	};
+	var textDispose = function textDispose(text) {
+	    return text.attr('fill', 'white').attr('font-size', '14px').attr('text-anchor', 'middle').attr('x', function (d, i) {
+	        return padding.left + i * rectStep;
+	    }).attr('y', function (d, i) {
+	        return height - padding.bottom - d;
+	    }).attr('dx', rectWidth / 2).attr('dy', '1em').text(function (d) {
+	        return d;
+	    });
+	};
+	//画bar
+	var rect = svg.selectAll('rect').data(dataset).enter().append('rect');
+	rectDispose(rect);
+
+	//文本
+	var text = svg.selectAll('text').data(dataset).enter().append('text');
+	textDispose(text);
+
+	//更新重绘
+	function draw() {
+	    //矩形处理
+	    var updateRect = svg.selectAll('rect').data(dataset),
+	        enterRect = updateRect.enter(),
+	        exitRect = updateRect.exit();
+	    //执行处理
+	    rectDispose(updateRect);
+	    rectDispose(enterRect.append('rect'));
+	    exitRect.remove();
+
+	    //文字update
+	    var updateText = svg.selectAll('text').data(dataset),
+	        enterText = updateText.enter(),
+	        exitText = updateText.exit();
+	    textDispose(updateText);
+	    textDispose(enterText.append('text'));
+	    exitText.remove();
+	}
+
+	//btn
+	d3.select('body').insert('button', 'script').attr('id', 'asc');
+	d3.select('body').insert('button', 'script').attr('id', 'desc');
+	d3.selectAll('button').data(['升序', '降序']).text(function (d) {
+	    return d;
+	});
+	d3.select('body').on('click', function () {
+	    if (d3.event.target.id == 'asc') dataset.sort(d3.ascending);else if (d3.event.target.id == 'desc') dataset.sort(d3.descending);
+	    //重绘
+	    draw();
+	});
+>>>>>>> e624b93a5ac985f40e1f7cb50d65f65e48b0dd6a
 
 /***/ },
 /* 1 */

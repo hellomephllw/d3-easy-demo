@@ -46,24 +46,49 @@
 
 	'use strict';
 
+	/**
+	 * Created by wb-llw259548 on 2017/1/23.
+	 */
 	var d3 = __webpack_require__(1);
-<<<<<<< HEAD
 
-	var arr = [6, 5, 4, 3, 2, 1];
+	//圆心数据
+	var centerData = [[0.5, 0.5], [0.7, 0.8], [0.4, 0.9], [0.11, 0.32], [0.88, 0.25], [0.75, 0.12], [0.5, 0.1], [0.2, 0.3], [0.4, 0.1], [0.6, 0.7]];
 
-	var pEles = d3.select('body').selectAll('p').data(arr).enter().append('p');
+	//svg宽高
+	var width = 400,
+	    height = 400;
+	//添加svg
+	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
 
-	pEles.style('color', function (d) {
-	    console.log(d);
-	    return 'red';
-	});
+	//x、y轴宽度
+	var xAxisWidth = 300,
+	    yAxisWidth = 300;
+	//x、y轴比例尺
+	var xScale = d3.scale.linear().domain([0, 1.2 * d3.max(centerData, function (d) {
+	    return d[0];
+	})]).range([0, xAxisWidth]);
+	var yScale = d3.scale.linear().domain([0, 1.2 * d3.max(centerData, function (d) {
+	    return d[1];
+	})]).range([0, yAxisWidth]);
+	var yScaleForAxis = d3.scale.linear().domain([0, 1.2 * d3.max(centerData, function (d) {
+	    return d[1];
+	})]).range([yAxisWidth, 0]);
 
-	pEles.style('font-size', function (d) {
-	    console.log(d);
-	    return '14px';
-	});
-=======
->>>>>>> e624b93a5ac985f40e1f7cb50d65f65e48b0dd6a
+	//外边距
+	var padding = { top: 30, right: 30, bottom: 30, left: 30 };
+
+	//绘制圆形
+	var circle = svg.selectAll('circle').data(centerData).enter().append('circle').attr('fill', 'black').attr('cx', function (d) {
+	    return padding.left + xScale(d[0]);
+	}).attr('cy', function (d) {
+	    return height - padding.bottom - yScale(d[1]);
+	}).attr('r', 5);
+
+	//绘制xy轴
+	var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
+	var yAxis = d3.svg.axis().scale(yScaleForAxis).orient('left');
+	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom) + ')').call(xAxis);
+	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom - yAxisWidth) + ')').call(yAxis);
 
 /***/ },
 /* 1 */

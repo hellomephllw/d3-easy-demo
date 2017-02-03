@@ -13,7 +13,15 @@ module.exports = {
         'force-demo1': `${rootPath}/src/scripts/force-demo1.js`,
         'force-demo2': `${rootPath}/src/scripts/force-demo2.js`,
         barchart: `${rootPath}/src/scripts/barchart.js`,
+<<<<<<< HEAD
         brush: `${rootPath}/src/scripts/brush.js`,
+=======
+        barchart1: `${rootPath}/src/scripts/barchart1.js`,
+        scatterchart: `${rootPath}/src/scripts/scatterchart.js`,
+        'histogram-rect': `${rootPath}/src/scripts/histogram-rect.js`,
+        'histogram-curve': `${rootPath}/src/scripts/histogram-curve.js`,
+        piechart: `${rootPath}/src/scripts/piechart.js`,
+>>>>>>> e624b93a5ac985f40e1f7cb50d65f65e48b0dd6a
         relationship: `${rootPath}/src/scripts/relationship.js`
     },
     //输出文件路径配置
@@ -57,27 +65,27 @@ module.exports = {
         //编译html
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/entry.html`,
-            template: `${rootPath}/src/views/entry.html`,//指定视图
+            template: `${rootPath}/src/views/entry.html`,
             hash: true,
-            chunks: ['main']//为视图指定js和css，名字在entry中选一个或多个
+            chunks: ['main']
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/force-demo1.html`,
-            template: `${rootPath}/src/views/force-demo1.html`,//指定视图
+            template: `${rootPath}/src/views/force-demo1.html`,
             hash: true,
-            chunks: ['force-demo1']//为视图指定js和css，名字在entry中选一个或多个
+            chunks: ['force-demo1']
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/force-demo2.html`,
-            template: `${rootPath}/src/views/force-demo2.html`,//指定视图
+            template: `${rootPath}/src/views/force-demo2.html`,
             hash: true,
-            chunks: ['force-demo2']//为视图指定js和css，名字在entry中选一个或多个
+            chunks: ['force-demo2']
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/relationship.html`,
-            template: `${rootPath}/src/views/relationship.html`,//指定视图
+            template: `${rootPath}/src/views/relationship.html`,
             hash: true,
-            chunks: ['relationship']//为视图指定js和css，名字在entry中选一个或多个
+            chunks: ['relationship']
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/brush.html`,
@@ -87,9 +95,39 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/barchart.html`,
-            template: `${rootPath}/src/views/barchart.html`,//指定视图
+            template: `${rootPath}/src/views/barchart.html`,
             hash: true,
-            chunks: ['barchart']//为视图指定js和css，名字在entry中选一个或多个
+            chunks: ['barchart']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/piechart.html`,
+            template: `${rootPath}/src/views/piechart.html`,
+            hash: true,
+            chunks: ['piechart']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/barchart1.html`,
+            template: `${rootPath}/src/views/barchart1.html`,
+            hash: true,
+            chunks: ['barchart1']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/scatterchart.html`,
+            template: `${rootPath}/src/views/scatterchart.html`,
+            hash: true,
+            chunks: ['scatterchart']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/histogram-rect.html`,
+            template: `${rootPath}/src/views/histogram-rect.html`,
+            hash: true,
+            chunks: ['histogram-rect']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/histogram-curve.html`,
+            template: `${rootPath}/src/views/histogram-curve.html`,
+            hash: true,
+            chunks: ['histogram-curve']
         })
     ]
 };

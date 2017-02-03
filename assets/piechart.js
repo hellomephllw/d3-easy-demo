@@ -46,24 +46,81 @@
 
 	'use strict';
 
+	/**
+	 * Created by wb-llw259548 on 2017/1/22.
+	 */
 	var d3 = __webpack_require__(1);
-<<<<<<< HEAD
 
-	var arr = [6, 5, 4, 3, 2, 1];
+	//数据
+	var dataset = [['小米', 60.8], ['三星', 58.4], ['联想', 47.3], ['苹果', 46.6], ['华为', 41.3], ['酷派', 40.1], ['其他', 111.5]];
 
-	var pEles = d3.select('body').selectAll('p').data(arr).enter().append('p');
+	//宽高内外半径
+	var width = 400,
+	    height = 400,
+	    outerRadius = width / 3,
+	    innerRadius = 0;
 
-	pEles.style('color', function (d) {
-	    console.log(d);
-	    return 'red';
+	//生成svg
+	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
+	//布局
+	var pie = d3.layout.pie().startAngle(Math.PI * 0.2).endAngle(Math.PI * 1.5).value(function (d) {
+	    return d[1];
+	}); //指定数据
+
+	//重构数据，把数据重构为饼布局所需数据
+	var piedata = pie(dataset);
+	console.log(piedata);
+
+	//弧生成器
+	var arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+
+	//颜色
+	var color = d3.scale.category20();
+
+	//添加对应数目的弧数组
+	var arcs = svg.selectAll('g').data(piedata).enter().append('g').attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')'); //把圆心移动到svg中央
+
+	//添加弧的路径元素
+	arcs.append('path').attr('fill', function (d, i) {
+	    return color(i);
+	}).attr('d', function (d) {
+	    return arc(d);
+	});
+	//添加文本
+	arcs.append('text').text(function (d) {
+	    //计算百分比，并以文本形式输出
+	    var percent = Number(d.value) / d3.sum(dataset, function (d) {
+	        return d[1];
+	    }) * 100;
+
+	    return percent.toFixed(1) + '%';
+	}).attr('transform', function (d) {
+	    //调整文本位置
+	    var x = arc.centroid(d)[0] * 1.4 - 18,
+	        y = arc.centroid(d)[1] * 1.4;
+
+	    return 'translate(' + x + ', ' + y + ')';
 	});
 
-	pEles.style('font-size', function (d) {
-	    console.log(d);
-	    return '14px';
+	//弧外连线
+	arcs.append('line').attr('stroke', 'black').attr('x1', function (d) {
+	    return arc.centroid(d)[0] * 2;
+	}).attr('y1', function (d) {
+	    return arc.centroid(d)[1] * 2;
+	}).attr('x2', function (d) {
+	    return arc.centroid(d)[0] * 2.2;
+	}).attr('y2', function (d) {
+	    return arc.centroid(d)[1] * 2.2;
 	});
-=======
->>>>>>> e624b93a5ac985f40e1f7cb50d65f65e48b0dd6a
+	//弧外文字
+	arcs.append('text').attr('transform', function (d) {
+	    var x = arc.centroid(d)[0] * 2.5,
+	        y = arc.centroid(d)[1] * 2.5;
+
+	    return 'translate(' + x + ', ' + y + ')';
+	}).attr('text-anchor', 'middle').text(function (d) {
+	    return d.data[0];
+	});
 
 /***/ },
 /* 1 */
