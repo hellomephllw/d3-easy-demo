@@ -54,23 +54,10 @@
 	//数据
 	var dataset = [50, 43, 120, 87, 99, 167, 142];
 
-<<<<<<< HEAD
-	//数据
-	var dataset = [50, 43, 120, 87, 99, 167, 142];
-
-	//svg宽高
-	/**
-	 * Created by liliwen on 2017/1/21.
-	 */
-	var width = '400';
-	var height = '400';
-
-=======
 	//svg宽高
 	var width = '400';
 	var height = '400';
 	//svg
->>>>>>> e624b93a5ac985f40e1f7cb50d65f65e48b0dd6a
 	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
 
 	//边距
@@ -81,25 +68,6 @@
 	//柱的宽度
 	var rectWidth = 30;
 
-<<<<<<< HEAD
-	//画bar
-	var rect = svg.selectAll('rect').data(dataset).enter().append('rect').attr('fill', 'steelblue').attr('x', function (d, i) {
-	    return padding.left + i * rectStep;
-	}).attr('y', function (d, i) {
-	    return height - padding.bottom - d;
-	}).attr('width', rectWidth).attr('height', function (d) {
-	    return d;
-	});
-
-	//文本
-	var text = svg.selectAll('text').data(dataset).enter().append('text').attr('fill', 'white').attr('font-size', '14px').attr('text-anchor', 'middle').attr('x', function (d, i) {
-	    return padding.left + i * rectStep;
-	}).attr('y', function (d, i) {
-	    return height - padding.bottom - d;
-	}).attr('dx', rectWidth / 2).attr('dy', '1em').text(function (d) {
-	    return d;
-	});
-=======
 	//处理函数
 	var rectDispose = function rectDispose(rect) {
 	    return rect.attr('fill', 'steelblue').attr('x', function (d, i) {
@@ -158,7 +126,6 @@
 	    //重绘
 	    draw();
 	});
->>>>>>> e624b93a5ac985f40e1f7cb50d65f65e48b0dd6a
 
 /***/ },
 /* 1 */

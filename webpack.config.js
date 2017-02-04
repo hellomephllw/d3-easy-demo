@@ -13,15 +13,13 @@ module.exports = {
         'force-demo1': `${rootPath}/src/scripts/force-demo1.js`,
         'force-demo2': `${rootPath}/src/scripts/force-demo2.js`,
         barchart: `${rootPath}/src/scripts/barchart.js`,
-<<<<<<< HEAD
         brush: `${rootPath}/src/scripts/brush.js`,
-=======
         barchart1: `${rootPath}/src/scripts/barchart1.js`,
         scatterchart: `${rootPath}/src/scripts/scatterchart.js`,
         'histogram-rect': `${rootPath}/src/scripts/histogram-rect.js`,
         'histogram-curve': `${rootPath}/src/scripts/histogram-curve.js`,
         piechart: `${rootPath}/src/scripts/piechart.js`,
->>>>>>> e624b93a5ac985f40e1f7cb50d65f65e48b0dd6a
+
         relationship: `${rootPath}/src/scripts/relationship.js`
     },
     //输出文件路径配置
