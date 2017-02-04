@@ -4,7 +4,8 @@
 'use strict';
 const d3 = require('d3');
 
-let brushEle;
+let brushGroupEle,
+    brush;
 
 //宽高
 let width = 500,
@@ -26,6 +27,7 @@ let circleEle = svg.append('circle')
 
 //图形2
 let rectEle = svg.append('rect')
+    .classed('rect', true)
     .attr('x', 150)
     .attr('y', 70)
     .attr('width', 70)
@@ -34,28 +36,37 @@ let rectEle = svg.append('rect')
 
 //比例尺
 let xScale = d3.scale.linear()
-    .domain([0, width])
-    .range([0, width]);
+    .domain([0, width])//brush.extent显示的范围
+    .range([0, width]);//浏览器画布实际范围
 let yScale = d3.scale.linear()
     .domain([0, height])
     .range([0, height]);
 
+//刷子
+brushGroupEle = svg.append('g').classed('brush', true);
+createBrush()(brushGroupEle);
 //创建刷子
-let brush = d3.svg.brush()
-    .x(xScale)
-    .y(yScale)
-    .extent([[0, 0], [100, 100]])
-    .on('brush', brushed)
-    .on('brushstart', brushStart)
-    .on('brushend', brushEnd);
+function createBrush() {
+    //构建刷子
+    brush = d3.svg.brush()
+        .x(xScale)
+        .y(yScale)
+        .extent([[0, 0], [0, 0]])//一出来隐藏刷子
+        .on('brushstart', brushStart)
+        .on('brush', brushed)
+        .on('brushend', brushEnd);
 
-brushEle = svg.append('g')
-    .call(brush)
-    .selectAll('rect')
-    .style({'fill-opacity': .3, 'opacity': 0});
+    //渲染刷子
+    return function(brushGroupEle) {
+        brushGroupEle.call(brush)
+            .selectAll('rect')
+            .style({'fill-opacity': .3});
+    };
+}
 
 function brushed() {
     let extent = brush.extent();
+    console.log(this == brush);
     // console.log('x方向的下限：' + extent[0][0]);
     // console.log('y方向的下限：' + extent[0][1]);
     // console.log('x方向的上限：' + extent[1][0]);
@@ -63,9 +74,11 @@ function brushed() {
 }
 
 function brushStart() {
-    brushEle.style({opacity: 1});
+    console.log('start');
 }
 
 function brushEnd() {
-    brushEle.style({opacity: 0});
+    console.log('end');
+
+    createBrush()(d3.select('.brush'))
 }
