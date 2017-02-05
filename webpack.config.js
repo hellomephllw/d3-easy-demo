@@ -13,11 +13,12 @@ module.exports = {
         'force-demo1': `${rootPath}/src/scripts/force-demo1.js`,
         'force-demo2': `${rootPath}/src/scripts/force-demo2.js`,
         barchart: `${rootPath}/src/scripts/barchart.js`,
-        brush: `${rootPath}/src/scripts/brush.js`,
         barchart1: `${rootPath}/src/scripts/barchart1.js`,
         scatterchart: `${rootPath}/src/scripts/scatterchart.js`,
         'histogram-rect': `${rootPath}/src/scripts/histogram-rect.js`,
         'histogram-curve': `${rootPath}/src/scripts/histogram-curve.js`,
+        brush: `${rootPath}/src/scripts/brush.js`,
+        brush1: `${rootPath}/src/scripts/brush1.js`,
         piechart: `${rootPath}/src/scripts/piechart.js`,
 
         relationship: `${rootPath}/src/scripts/relationship.js`
@@ -120,6 +121,12 @@ module.exports = {
             template: `${rootPath}/src/views/histogram-rect.html`,
             hash: true,
             chunks: ['histogram-rect']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/brush1.html`,
+            template: `${rootPath}/src/views/brush1.html`,
+            hash: true,
+            chunks: ['brush1']
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/histogram-curve.html`,

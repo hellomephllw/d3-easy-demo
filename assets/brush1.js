@@ -44,67 +44,65 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Created by liliwen on 2017/2/2.
-	 */
 	'use strict';
 
+	/**
+	 * Created by liliwen on 2017/2/5.
+	 */
 	var d3 = __webpack_require__(1);
-
-	var brushGroupEle = void 0,
-	    brush = void 0;
 
 	//宽高
 	var width = 500,
 	    height = 500;
 
 	//创建svg
-	var svg = d3.select('body').append('svg').style({ border: '1px solid red' }).attr('width', width).attr('height', height);
+	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
 
-	//图形1
-	var circleEle = svg.append('circle').attr('cx', 100).attr('cy', 100).attr('r', 30).style('fill', 'black');
+	//边界空白
+	var padding = { left: 50, right: 50, top: 50, bottom: 50 };
 
-	//图形2
-	var rectEle = svg.append('rect').classed('rect', true).attr('x', 150).attr('y', 70).attr('width', 70).attr('height', 60).style('fill', 'black');
+	//x轴比例尺
+	var xScale = d3.scale.linear().domain([0, 10]).range([padding.left, width - padding.right]);
 
-	//比例尺
-	var xScale = d3.scale.linear().domain([0, width]) //brush.extent显示的范围
-	.range([0, width]); //浏览器画布实际范围
-	var yScale = d3.scale.linear().domain([0, height]).range([0, height]);
+	//y轴比例尺
+	var yScale = d3.scale.linear().domain([10, 0]).range([padding.top, height - padding.bottom]);
+
+	//散点图的数据
+	var dataset = [];
+
+	for (var i = 0; i < 150; ++i) {
+	    dataset.push([Math.random() * 10, Math.random() * 10]);
+	}
+
+	//添加散点
+	var circles = svg.selectAll('circle').data(dataset).enter().append('circle').attr('cx', function (d) {
+	    return xScale(d[0]);
+	}).attr('cy', function (d) {
+	    return yScale(d[1]);
+	}).attr('r', 5).style('fill', 'black');
 
 	//刷子
-	brushGroupEle = svg.append('g').classed('brush', true);
-	createBrush()(brushGroupEle);
-	//创建刷子
-	function createBrush() {
-	    //构建刷子
-	    brush = d3.svg.brush().x(xScale).y(yScale).extent([[0, 0], [0, 0]]) //一出来隐藏刷子
-	    .on('brushstart', brushStart).on('brush', brushed).on('brushend', brushEnd);
-
-	    //渲染刷子
-	    return function (brushGroupEle) {
-	        brushGroupEle.call(brush).selectAll('rect').style({ 'fill-opacity': .3 });
-	    };
-	}
+	var brush = d3.svg.brush().x(xScale).y(yScale).extent([[0, 0], [0, 0]]).on('brush', brushed);
 
 	function brushed() {
-	    var extent = brush.extent();
-	    console.log(this == brush);
-	    // console.log('x方向的下限：' + extent[0][0]);
-	    // console.log('y方向的下限：' + extent[0][1]);
-	    // console.log('x方向的上限：' + extent[1][0]);
-	    // console.log('y方向的上限：' + extent[1][1]);
+	    var extent = brush.extent(),
+	        xMin = extent[0][0],
+	        xMax = extent[1][0],
+	        yMin = extent[0][1],
+	        yMax = extent[1][1];
+	    //散点坐标在选择框范围内，变为红色，否则都为黑色
+	    circles.style('fill', function (d) {
+	        return d[0] >= xMin && d[0] <= xMax && d[1] >= yMin && d[1] <= yMax ? 'red' : 'black';
+	    });
 	}
 
-	function brushStart() {
-	    console.log('start');
-	}
+	svg.append('g').call(brush).selectAll('rect').style('fill-opacity', .3);
 
-	function brushEnd() {
-	    console.log('end');
-
-	    createBrush()(d3.select('.brush'));
-	}
+	//绘制xy轴
+	var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
+	var yAxis = d3.svg.axis().scale(yScale).orient('left');
+	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom) + ')').call(xAxis);
+	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom) + ')').call(yAxis);
 
 /***/ },
 /* 1 */
