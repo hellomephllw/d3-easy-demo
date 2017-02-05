@@ -20,7 +20,7 @@ module.exports = {
         brush: `${rootPath}/src/scripts/brush.js`,
         brush1: `${rootPath}/src/scripts/brush1.js`,
         piechart: `${rootPath}/src/scripts/piechart.js`,
-
+        relationship1: `${rootPath}/src/scripts/relationship1.js`,
         relationship: `${rootPath}/src/scripts/relationship.js`
     },
     //输出文件路径配置
@@ -85,6 +85,12 @@ module.exports = {
             template: `${rootPath}/src/views/relationship.html`,
             hash: true,
             chunks: ['relationship']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/relationship1.html`,
+            template: `${rootPath}/src/views/relationship1.html`,
+            hash: true,
+            chunks: ['relationship1']
         }),
         new HtmlWebpackPlugin({
             filename: `${rootPath}/assets/brush.html`,

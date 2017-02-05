@@ -164,7 +164,6 @@ let json = require('../lib/relaction.json');
             return (d.source.y + d.target.y) / 2;
         });
 
-
         //更新结点图片和文字
         nodes_img.attr("x", function (d) {
             return d.x - img_w / 2;
@@ -174,7 +173,7 @@ let json = require('../lib/relaction.json');
         });
 
         nodes_text.attr("x", function (d) {
-            return d.x
+            return d.x;
         });
         nodes_text.attr("y", function (d) {
             return d.y + img_w / 2;

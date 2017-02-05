@@ -96,13 +96,14 @@
 	    });
 	}
 
+	//绘制刷子
 	svg.append('g').call(brush).selectAll('rect').style('fill-opacity', .3);
 
 	//绘制xy轴
 	var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
 	var yAxis = d3.svg.axis().scale(yScale).orient('left');
-	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom) + ')').call(xAxis);
-	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', ' + (height - padding.bottom) + ')').call(yAxis);
+	svg.append('g').classed('axis', true).attr('transform', 'translate(0, ' + (height - padding.bottom) + ')').call(xAxis);
+	svg.append('g').classed('axis', true).attr('transform', 'translate(' + padding.left + ', .0)').call(yAxis);
 
 /***/ },
 /* 1 */
