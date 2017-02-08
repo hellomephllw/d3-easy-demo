@@ -21,7 +21,8 @@ module.exports = {
         brush1: `${rootPath}/src/scripts/brush1.js`,
         piechart: `${rootPath}/src/scripts/piechart.js`,
         relationship1: `${rootPath}/src/scripts/relationship1.js`,
-        relationship: `${rootPath}/src/scripts/relationship.js`
+        relationship: `${rootPath}/src/scripts/relationship.js`,
+        drag: `${rootPath}/src/scripts/drag.js`
     },
     //输出文件路径配置
     output: {
@@ -139,6 +140,12 @@ module.exports = {
             template: `${rootPath}/src/views/histogram-curve.html`,
             hash: true,
             chunks: ['histogram-curve']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/drag.html`,
+            template: `${rootPath}/src/views/drag.html`,
+            hash: true,
+            chunks: ['drag']
         })
     ]
 };

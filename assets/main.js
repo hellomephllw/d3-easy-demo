@@ -48,17 +48,21 @@
 
 	var d3 = __webpack_require__(1);
 
-	var numbers = [54, 23, 77, 11, 34];
+	var divSelection = d3.select('body').insert('div', 'script');
 
-	numbers.sort(d3.ascending);
+	var pElesSelection = divSelection.selectAll('p').data([1, 2, 3]).enter().append('p').text(function (d) {
+	    return d;
+	});
 
-	console.log(numbers);
+	pElesSelection[0].map(function (ele, i) {
+	    console.log(i);
+	    if (i == 1) {
+	        d3.select(ele).remove();
+	        pElesSelection[0].splice(i, 1);
+	    }
+	});
 
-	var arr = ['a', '1', '5', '2', 'b'];
-
-	console.log(d3.bisectLeft(numbers, 54));
-
-	console.log(arr);
+	console.log(pElesSelection);
 
 /***/ },
 /* 1 */

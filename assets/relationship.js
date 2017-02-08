@@ -46,11 +46,81 @@
 
 	'use strict';
 
-	var _d = __webpack_require__(1);
+	/**
+	 * Created by wb-llw259548 on 2017/1/18.
+	 */
+	var d3 = __webpack_require__(1);
 
-	var d3 = _interopRequireWildcard(_d);
+	//svg宽高
+	var width = 500,
+	    height = 500;
 
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	//节点原始数据
+	var nodes = [{ name: 'James' }, //0
+	{ name: 'Irvin' }, //1
+	{ name: 'Love' }, //2
+	{ name: '队友' }, //3
+	{ name: '好友' }, //4
+	{ name: '亲戚' } //5
+	];
+	//连线原始数据
+	var edges = [{ source: 0, target: 3 }, { source: 3, target: 1 }, { source: 3, target: 2 }, { source: 1, target: 4 }, { source: 1, target: 5 }];
+
+	//创建svg
+	var svg = d3.select('body').insert('svg', 'script').attr('width', width).attr('height', height);
+
+	//力布局
+	var force = d3.layout.force().nodes(nodes).links(edges).size([width, height]) //作用范围
+	.linkDistance(90) //连线距离
+	.charge(-400); //节点电荷数
+	//开启力布局
+	force.start();
+
+	//颜色生成器
+	var colorGenerator = d3.scale.category20();
+
+	//绘制连线
+	var lines = svg.selectAll('.forceLine').data(edges).enter().append('line').classed('forceLine', true).style('stroke', '#ccc').style('stroke-width', 1);
+
+	//绘制节点
+	var circles = svg.selectAll('.forceCircle').data(nodes).enter().append('circle').classed('forceCircle', true).attr('r', 20).style('fill', function (d, i) {
+	    return colorGenerator(i);
+	}).call(force.drag); //允许拖动
+
+	//绘制文字
+	var texts = svg.selectAll('.forceText').data(nodes).enter().append('text').classed('forceText', true).attr('dx', '-.3em').attr('dy', '.4em').text(function (d) {
+	    return d.name;
+	});
+
+	//tick事件监听器
+	force.on('tick', function () {
+	    //更新连线坐标
+	    lines.attr('x1', function (d) {
+	        return d.source.x;
+	    }).attr('y1', function (d) {
+	        return d.source.y;
+	    }).attr('x2', function (d) {
+	        return d.target.x;
+	    }).attr('y2', function (d) {
+	        return d.target.y;
+	    });
+
+	    //更新节点坐标
+	    circles.attr('cx', function (d) {
+	        return d.x;
+	    }).attr('cy', function (d) {
+	        return d.y;
+	    });
+
+	    //更新节点上文字的坐标
+	    texts.attr('x', function (d) {
+	        return d.x;
+	    }).attr('y', function (d) {
+	        return d.y;
+	    });
+	});
+
+	d3.select('body').on('click', function () {});
 
 /***/ },
 /* 1 */

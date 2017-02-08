@@ -1,13 +1,19 @@
 const d3 = require('d3');
 
-let numbers = [54, 23, 77, 11, 34];
+let divSelection = d3.select('body').insert('div', 'script');
 
-numbers.sort(d3.ascending);
+let pElesSelection = divSelection.selectAll('p')
+    .data([1, 2, 3])
+    .enter()
+    .append('p')
+    .text(d => d);
 
-console.log(numbers);
+pElesSelection[0].map((ele, i) => {
+    console.log(i);
+    if (i == 1) {
+        d3.select(ele).remove();
+        pElesSelection[0].splice(i, 1);
+    }
+});
 
-let arr = ['a', '1', '5', '2', 'b'];
-
-console.log(d3.bisectLeft(numbers, 54));
-
-console.log(arr);
+console.log(pElesSelection);

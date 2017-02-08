@@ -1,7 +1,7 @@
 /**
  * Created by wb-llw259548 on 2017/1/18.
  */
-import * as d3 from 'd3';
+const d3 = require('d3');
 
 //svg宽高
 let width = 500,
@@ -9,20 +9,20 @@ let width = 500,
 
 //节点原始数据
 let nodes = [
-    {name: 'James'},
-    {name: 'Irvin'},
-    {name: 'Love'},
-    {name: '队友'},
-    {name: '亲戚'}
+    {name: 'James'},//0
+    {name: 'Irvin'},//1
+    {name: 'Love'},//2
+    {name: '队友'},//3
+    {name: '好友'},//4
+    {name: '亲戚'}//5
 ];
 //连线原始数据
 let edges = [
-    {source: 0, target: 1},
-    {source: 0, target: 2},
     {source: 0, target: 3},
+    {source: 3, target: 1},
+    {source: 3, target: 2},
     {source: 1, target: 4},
-    {source: 1, target: 5},
-    {source: 1, target: 6}
+    {source: 1, target: 5}
 ];
 
 //创建svg
@@ -90,4 +90,8 @@ force.on('tick', () => {
     texts
         .attr('x', d => d.x)
         .attr('y', d => d.y);
+});
+
+d3.select('body').on('click', () => {
+
 });
