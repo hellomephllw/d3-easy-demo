@@ -46,6 +46,9 @@
 
 	'use strict';
 
+	/**
+	 * Created by wb-llw259548 on 2017/3/3.
+	 */
 	var d3 = __webpack_require__(1);
 
 	var svgEleD3 = d3.select(document.body).insert('svg', 'script').attr('width', 800).attr('height', 800).style({

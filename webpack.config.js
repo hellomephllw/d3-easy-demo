@@ -22,7 +22,8 @@ module.exports = {
         piechart: `${rootPath}/src/scripts/piechart.js`,
         relationship1: `${rootPath}/src/scripts/relationship1.js`,
         relationship: `${rootPath}/src/scripts/relationship.js`,
-        drag: `${rootPath}/src/scripts/drag.js`
+        drag: `${rootPath}/src/scripts/drag.js`,
+        zoom1: `${rootPath}/src/scripts/zoom1.js`
     },
     //输出文件路径配置
     output: {
@@ -146,6 +147,12 @@ module.exports = {
             template: `${rootPath}/src/views/drag.html`,
             hash: true,
             chunks: ['drag']
+        }),
+        new HtmlWebpackPlugin({
+            filename: `${rootPath}/assets/zoom1.html`,
+            template: `${rootPath}/src/views/zoom1.html`,
+            hash: true,
+            chunks: ['zoom1']
         })
     ]
 };
